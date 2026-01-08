@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tc_system"
+authors = [
+    {name = "Antigravity", email = "admin@tcsystem.com"},
+]
+description = "Customizations for TCsystem"
+dependencies = [
+    "frappe~=15.0",
+]
+dynamic = ["version"]
+
+[tool.flit.module]
+name = "tc_system"
