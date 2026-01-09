@@ -35,3 +35,36 @@ def sign_up(email, full_name, password):
     user.add_roles("System Manager") # Warning: Only for dev. Usually 'Customer' or 'Guest'.
     
     return {"message": "User created successfully", "user": user.name}
+
+@frappe.whitelist(allow_guest=True)
+def handle_webhook():
+    """
+    Inbound webhook receiver from Microservices.
+    Expected Payload:
+    {
+        "event": "OrderNeedsReview",
+        "payload": { ... },
+        "timestamp": "iso-date"
+    }
+    """
+    # 1. Verify Signature (HMAC)
+    # signature = frappe.get_request_header("X-Signature")
+    # secret = frappe.conf.get("TCSYSTEM_WEBHOOK_SECRET")
+    # if not verify_signature(frappe.request.data, signature, secret):
+    #     frappe.throw("Invalid Signature", frappe.PermissionError)
+
+    data = frappe.form_dict
+    event_type = data.get("event")
+    
+    if not event_type:
+        return {"status": "error", "message": "Missing event type"}
+
+    # 2. Enqueue processing to avoid blocking the caller
+    frappe.enqueue(
+        "tc_system.jobs.event_processor.process_event",
+        queue="default",
+        event_type=event_type,
+        payload=data.get("payload")
+    )
+
+    return {"status": "queued", "event": event_type}

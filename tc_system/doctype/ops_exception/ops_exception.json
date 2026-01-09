@@ -1,0 +1,60 @@
+{
+    "actions": [],
+    "creation": "2024-01-01 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "exception_type",
+        "status",
+        "related_document",
+        "exception_payload",
+        "resolution_notes"
+    ],
+    "fields": [
+        {
+            "fieldname": "exception_type",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Exception Type",
+            "options": "Provisioning Failure\nPayment Mismatch\nData Integrity\nOther",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Status",
+            "options": "New\nIgnored\nResolved",
+            "default": "New"
+        },
+        {
+            "fieldname": "related_document",
+            "fieldtype": "Dynamic Link",
+            "label": "Related Document",
+            "options": "doctype"
+        },
+        {
+            "fieldname": "exception_payload",
+            "fieldtype": "Code",
+            "label": "Payload (JSON)",
+            "options": "JSON"
+        },
+        {
+            "fieldname": "resolution_notes",
+            "fieldtype": "Small Text",
+            "label": "Resolution Notes"
+        }
+    ],
+    "module": "TC System",
+    "name": "Ops Exception",
+    "naming_rule": "Random",
+    "permissions": [
+        {
+            "create": 1,
+            "read": 1,
+            "write": 1,
+            "delete": 1,
+            "role": "System Manager"
+        }
+    ]
+}

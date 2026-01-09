@@ -1,8 +1,8 @@
 app_name = "tc_system"
-app_title = "TC System"
+app_title = "Telecom Cambodia"
 app_publisher = "Antigravity"
-app_description = "Customizations for TCsystem"
-app_email = "admin@tcsystem.com"
+app_description = "Telecom Cambodia Control Plane"
+app_email = "admin@telecomcambodia.com"
 app_license = "mit"
 
 # Includes in <head>
@@ -34,3 +34,23 @@ app_license = "mit"
 # -------------
 # List of API methods that can be called via /api/method/tc_system.api.method_name
 # These are handled in api.py
+
+# Scheduled Tasks
+# ---------------
+scheduler_events = {
+	"all": [
+		"tc_system.jobs.scheduler.check_slas",       # Every 5 mins (default frequency for 'all' is usually configurable, but typically use cron)
+	],
+    "cron": {
+        "*/5 * * * *": [
+            "tc_system.jobs.scheduler.check_slas"
+        ],
+        "*/10 * * * *": [
+             "tc_system.jobs.scheduler.check_stuck_orders"
+        ]
+    },
+	"daily": [
+		"tc_system.jobs.scheduler.daily_reconciliation"
+	]
+}
+

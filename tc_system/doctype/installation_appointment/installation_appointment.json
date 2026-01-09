@@ -1,0 +1,72 @@
+{
+    "actions": [],
+    "creation": "2024-01-01 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "customer_name",
+        "appointment_date",
+        "status",
+        "technician",
+        "address",
+        "geolocation"
+    ],
+    "fields": [
+        {
+            "fieldname": "customer_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Customer Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "appointment_date",
+            "fieldtype": "Datetime",
+            "in_list_view": 1,
+            "label": "Appointment Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Status",
+            "options": "Scheduled\nCompleted\nFailed\nCancelled",
+            "default": "Scheduled"
+        },
+        {
+            "fieldname": "technician",
+            "fieldtype": "Link",
+            "label": "Technician",
+            "options": "User"
+        },
+        {
+            "fieldname": "address",
+            "fieldtype": "Small Text",
+            "label": "Address"
+        },
+        {
+            "fieldname": "geolocation",
+            "fieldtype": "Geolocation",
+            "label": "Location"
+        }
+    ],
+    "module": "TC System",
+    "name": "Installation Appointment",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "appointment_date",
+    "sort_order": "ASC"
+}
