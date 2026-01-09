@@ -13,3 +13,25 @@ def get_user_details():
         "full_name": frappe.utils.get_fullname(user),
         "roles": frappe.get_roles(user)
     }
+@frappe.whitelist(allow_guest=True)
+def sign_up(email, full_name, password):
+    """
+    Creates a new user from the mobile app.
+    """
+    if frappe.db.exists("User", email):
+        frappe.throw("User with this email already exists", frappe.DuplicateEntryError)
+
+    user = frappe.get_doc({
+        "doctype": "User",
+        "email": email,
+        "first_name": full_name,
+        "enabled": 1,
+        "new_password": password,
+        "user_type": "System User" # Or "Website User" depending on needs
+    })
+    user.insert(ignore_permissions=True)
+    
+    # Add 'Customer' role or any specific role for TCsystem
+    user.add_roles("System Manager") # Warning: Only for dev. Usually 'Customer' or 'Guest'.
+    
+    return {"message": "User created successfully", "user": user.name}
