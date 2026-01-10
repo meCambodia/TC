@@ -18,7 +18,7 @@ website_context = {
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_js = "/assets/tc_system/js/tc_system.js"
+app_include_js = "/assets/tc_system/js/tc_system.js"
 app_include_css = "/assets/tc_system/css/tc_system.css"
 
 # include js, css files in header of web template
