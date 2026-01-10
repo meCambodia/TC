@@ -1,20 +1,16 @@
 /* Telecom Cambodia Theme */
 
-/* Header Branding - Force Override */
-.navbar-brand .app-logo,
-.frappe-navbar .navbar-brand img,
-.navbar-home img,
-.app-logo {
-    content: url("/assets/tc_system/images/tc_logo.png") !important;
-    max-height: 40px;
-    width: auto;
-}
+/* Header Branding */
+/*
+   Note: Logo is now handled by Website Settings (DB).
+   We removed the CSS override to prevent loading conflicts.
+*/
 
 /* Login Page Logo */
-.page-card-head img {
+/* .page-card-head img {
     content: url("/assets/tc_system/images/tc_logo.png") !important;
     max-height: 80px;
-}
+} */
 
 /* Primary Color: Telecom Cambodia Blue */
 :root {
