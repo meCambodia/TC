@@ -25,6 +25,9 @@ $(document).on("app_ready", function () {
                         <a class="dropdown-item" href="mailto:support@telecomcambodia.com">
                             Contact IT Ops
                         </a>
+                        <a class="dropdown-item" href="#" onclick="frappe.msgprint('Hello World! 🌍')">
+                            Hello World
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" onclick="frappe.ui.misc.about()">
                             About
