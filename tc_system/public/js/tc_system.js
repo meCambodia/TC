@@ -1,18 +1,17 @@
 frappe.provide("tc_system");
 
 $(document).on("app_ready", function () {
+
     // REPLACEMENT STRATEGY
-    // 1. Wait for Navbar
     let retries = 0;
     const injectMenu = setInterval(() => {
         let user_menu = $('.dropdown-navbar-user');
         let existing = $('#tc-help-menu');
 
-        // If User menu exists and we haven't injected yet
-        if (user_menu.length && existing.length === 0) {
+        // Capture and Hide original if it sneaks back
+        $('.dropdown-help').hide();
 
-            // 2. Create Pure HTML Dropdown (Bootstrap 4/5 compatible)
-            // Using standard Frappe icons for style match
+        if (user_menu.length && existing.length === 0) {
             let menuHtml = `
                 <li class="nav-item dropdown" id="tc-help-menu">
                     <a class="nav-link dropdown-toggle" href="#" id="tcHelpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,18 +32,33 @@ $(document).on("app_ready", function () {
                     </div>
                 </li>
             `;
-
-            // 3. Insert BEFORE the User Menu
             user_menu.before(menuHtml);
-            console.log("TC System: Custom Help Menu Injected");
-
-            // Stop loop
             clearInterval(injectMenu);
         }
-
         retries++;
-        if (retries > 50) clearInterval(injectMenu); // Give up after 25s
+        if (retries > 50) clearInterval(injectMenu);
     }, 500);
+
+    // SENTRY ROBOT: The "Text Sniper" using MutationObserver
+    // This watches the DOM continuously for unwanted elements
+    const observer = new MutationObserver(function (mutations) {
+        // Find ANY list item or link containing "Frappe Support"
+        const targets = document.querySelectorAll('li, a, .dropdown-item');
+
+        targets.forEach(function (el) {
+            // Check text content safely
+            const text = (el.textContent || "").trim();
+            if (text.includes("Frappe Support") || text.includes("Keyboard Shortcuts")) {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden'; // Double tap
+                el.classList.add('banned-by-sentry');
+            }
+        });
+    });
+
+    // Start watching
+    observer.observe(document.body, { childList: true, subtree: true });
+    console.log("TC System: Sentry Robot Deployed");
 });
 
 // Customize About Dialog
