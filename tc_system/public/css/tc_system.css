@@ -1,20 +1,18 @@
 /* TC System Branding */
 
-/* Hide Default Logo if needed (we replaced it via settings, but safe to hide original if duplicated) */
-/* .app-logo { display: none !important; } */
-
-/* Hide Frappe specific links in Help Menu */
-.dropdown-help .dropdown-menu .dropdown-item[href*="frappe"],
-.dropdown-help .dropdown-menu .dropdown-item[href*="github"],
-.dropdown-help .dropdown-menu .dropdown-item[href*="forum"],
-.dropdown-help .dropdown-menu .dropdown-item[href*="docs"] {
+/* NUCLEAR OPTION: Hide ALL items in Help Menu */
+.dropdown-help .dropdown-menu>li,
+.dropdown-help .dropdown-menu>a {
     display: none !important;
 }
 
-/* Ensure our items are visible */
-.dropdown-help .dropdown-menu .dropdown-item {
-    font-weight: 500;
+/* NUCLEAR EXCEPTION: Show ONLY our safe items */
+.dropdown-help .dropdown-menu>li.tc-safe,
+.dropdown-help .dropdown-menu>a.tc-safe {
+    display: block !important;
 }
 
-/* Custom Header Color if needed */
-/* .navbar { background-color: #007bff !important; } */
+/* Ensure branding fits */
+.navbar {
+    /* background-color: #007bff !important; */
+}
