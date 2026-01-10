@@ -1,18 +1,28 @@
-/* TC System Branding */
+/* TC System Branding & Clean Up */
 
-/* NUCLEAR OPTION: Hide ALL items in Help Menu */
+/* 1. NUCLEAR OPTION: Hide ALL items in the Help Menu specific structure */
 .dropdown-help .dropdown-menu>li,
 .dropdown-help .dropdown-menu>a {
     display: none !important;
 }
 
-/* NUCLEAR EXCEPTION: Show ONLY our safe items */
+/* 2. EXCEPTION: Show ONLY our safe items (tagged via JS) */
 .dropdown-help .dropdown-menu>li.tc-safe,
 .dropdown-help .dropdown-menu>a.tc-safe {
     display: block !important;
 }
 
-/* Ensure branding fits */
-.navbar {
-    /* background-color: #007bff !important; */
+/* 3. GLOBAL CLEANUP: Any link in ANY navbar dropdown pointing to Frappe */
+/* This catches "Report an Issue", "Documentation", "Forum" wherever they hide */
+.navbar .dropdown-menu a[href*="frappe"],
+.navbar .dropdown-menu a[href*="github.com/frappe"],
+.navbar .dropdown-menu a[href*="discuss"],
+.board-header .dropdown-menu a[href*="frappe"] {
+    display: none !important;
+}
+
+/* 4. Hide Keyboard Shortcuts (usually lacks href, identified by onclick or position) */
+.dropdown-help .dropdown-menu li:last-child {
+    /* Often the last item is shortcuts or verify */
+    /* display: none !important; */
 }
