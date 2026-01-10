@@ -1,4 +1,4 @@
-# Telecom Cambodia (Frappe App) — ISP Customer Ops Control Plane
+# <img src="tc_system/public/images/logo.png" align="center" width="100" /> Telecom Cambodia (Frappe App)
 
 > Note: This README assumes the Frappe app/module name is `tc_system`. If your actual app name differs, replace `tc_system` and `TCSYSTEM_*` accordingly.
 
