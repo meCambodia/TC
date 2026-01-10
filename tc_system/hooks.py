@@ -11,6 +11,7 @@ app_logo_url = "/assets/tc_system/images/logo.png"
 website_context = {
 	"favicon": "/assets/tc_system/images/logo.png",
 	"splash_image": "/assets/tc_system/images/logo.png",
+    "brand_html": "<img src='/assets/tc_system/images/logo.png' style='max-width: 40px; max-height: 40px;'> Telecom Cambodia",
 }
 
 # Includes in <head>
