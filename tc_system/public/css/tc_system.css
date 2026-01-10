@@ -1,0 +1,27 @@
+/* Telecom Cambodia Theme */
+
+/* Header Branding */
+.navbar-brand .app-logo {
+    content: url("https://telecomcambodia.com/logo.png"); /* Replace with actual asset later */
+    max-height: 40px;
+}
+
+/* Primary Color: Telecom Cambodia Blue */
+:root {
+    --primary: #007bff; /* Adjust to official TC brand color */
+    --primary-light: #e6f2ff;
+}
+
+/* Rounded Buttons for a Modern Feel */
+.btn {
+    border-radius: 8px !important;
+}
+
+/* Highlight Critical Statuses in List Views */
+.list-row-container[data-status="Open"] .level-left {
+    border-left: 4px solid var(--primary);
+}
+
+.list-row-container[data-status="Critical"] .level-left {
+    border-left: 4px solid #dc3545;
+}
