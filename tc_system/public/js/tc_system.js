@@ -1,56 +1,58 @@
 frappe.provide("tc_system");
 
 $(document).on("app_ready", function () {
-    let retry_count = 0;
-    const cleanHelpMenu = setInterval(() => {
-        let help_dropdown = $('.dropdown-help .dropdown-menu'); // Desk
+    // REPLACEMENT STRATEGY
+    // 1. Wait for Navbar
+    let retries = 0;
+    const injectMenu = setInterval(() => {
+        let user_menu = $('.dropdown-navbar-user');
+        let existing = $('#tc-help-menu');
 
-        // Also check User Menu just in case
-        let user_dropdown = $('.dropdown-navbar-user .dropdown-menu');
+        // If User menu exists and we haven't injected yet
+        if (user_menu.length && existing.length === 0) {
 
-        // 1. CLEAN HELP MENU
-        if (help_dropdown.length) {
+            // 2. Create Pure HTML Dropdown (Bootstrap 4/5 compatible)
+            // Using standard Frappe icons for style match
+            let menuHtml = `
+                <li class="nav-item dropdown" id="tc-help-menu">
+                    <a class="nav-link dropdown-toggle" href="#" id="tcHelpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>Help</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="tcHelpDropdown">
+                        <span class="dropdown-header">Telecom Cambodia Ops</span>
+                        <a class="dropdown-item" href="#" onclick="frappe.msgprint('Platform Manual: Coming Soon')">
+                            Platform Manual
+                        </a>
+                        <a class="dropdown-item" href="mailto:support@telecomcambodia.com">
+                            Contact IT Ops
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="frappe.ui.misc.about()">
+                            About
+                        </a>
+                    </div>
+                </li>
+            `;
 
-            // PASS 1: If untagged items exist, rebuild
-            if (help_dropdown.children(':not(.tc-safe)').length > 0) {
-                help_dropdown.empty();
-                let custom_help = `
-                     <li class="dropdown-header tc-safe">Telecom Cambodia Operations</li>
-                     <li class="tc-safe"><a class="dropdown-item" href="#" onclick="frappe.msgprint('Manual Coming Soon')">Platform Manual</a></li>
-                     <li class="tc-safe"><a class="dropdown-item" href="mailto:support@telecomcambodia.com">Contact IT Ops</a></li>
-                 `;
-                help_dropdown.append(custom_help);
-            }
+            // 3. Insert BEFORE the User Menu
+            user_menu.before(menuHtml);
+            console.log("TC System: Custom Help Menu Injected");
 
-            // PASS 2: Text Sniper (Double verify)
-            help_dropdown.find('li, a').each(function () {
-                const txt = $(this).text() || "";
-                if (txt.includes("Frappe Support") || txt.includes("Fauxtomation") || txt.includes("Keyboard Shortcuts")) {
-                    $(this).remove();
-                }
-            });
+            // Stop loop
+            clearInterval(injectMenu);
         }
 
-        // 2. CLEAN USER MENU (Sometimes Support hides here)
-        if (user_dropdown.length) {
-            user_dropdown.find('li, a').each(function () {
-                const txt = $(this).text() || "";
-                if (txt.includes("Support") || txt.includes("Report an Issue")) {
-                    $(this).hide(); // Use Hide to avoid breaking layout
-                }
-            });
-        }
-
-        retry_count++;
-        if (retry_count > 20) clearInterval(cleanHelpMenu);
+        retries++;
+        if (retries > 50) clearInterval(injectMenu); // Give up after 25s
     }, 500);
 });
 
+// Customize About Dialog
 frappe.provide('frappe.ui.misc');
 frappe.ui.misc.about = function () {
     frappe.msgprint({
-        title: "About Telecom Cambodia Control Plane",
-        message: "Version 2.0 (Day 2)<br>Powered by Frappe Cloud",
+        title: "About Telecom Cambodia",
+        message: "Control Plane v2.0 <br> Built for Internal Operations",
         indicator: "blue"
     });
 };
