@@ -13,6 +13,33 @@ def get_user_details():
         "full_name": frappe.utils.get_fullname(user),
         "roles": frappe.get_roles(user)
     }
+
+@frappe.whitelist()
+def get_my_cases():
+    """Fetch support tickets for the logged-in user."""
+    return frappe.get_all(
+        "TC Case",
+        filters={"customer_id": frappe.session.user},
+        fields=["name", "subject", "status", "priority", "modified"],
+        order_by="modified desc"
+    )
+
+@frappe.whitelist()
+def create_case(subject, description, priority="Medium"):
+    """Allow mobile users to create a new support ticket."""
+    if not subject:
+        frappe.throw("Subject is required")
+    
+    case = frappe.get_doc({
+        "doctype": "TC Case",
+        "subject": subject,
+        "description": description,
+        "priority": priority,
+        "customer_id": frappe.session.user,
+        "status": "Open"
+    })
+    case.insert(ignore_permissions=True)
+    return {"message": "Case created", "name": case.name}
 @frappe.whitelist(allow_guest=True)
 def sign_up(email, full_name, password):
     """
