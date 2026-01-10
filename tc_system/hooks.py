@@ -6,12 +6,12 @@ app_email = "admin@telecomcambodia.com"
 app_license = "mit"
 
 # Note: Assets in public/ folder are served at /assets/<app_name>/...
-app_logo_url = "/assets/tc_system/images/logo.png"
+app_logo_url = "/assets/tc_system/images/tc_logo.png"
 
 website_context = {
-	"favicon": "/assets/tc_system/images/logo.png",
-	"splash_image": "/assets/tc_system/images/logo.png",
-    "brand_html": "<img src='/assets/tc_system/images/logo.png' style='max-width: 40px; max-height: 40px;'> Telecom Cambodia",
+	"favicon": "/assets/tc_system/images/tc_logo.png",
+	"splash_image": "/assets/tc_system/images/tc_logo.png",
+    "brand_html": "<img src='/assets/tc_system/images/tc_logo.png' style='max-width: 40px; max-height: 40px;'> Telecom Cambodia",
 }
 
 # Includes in <head>
