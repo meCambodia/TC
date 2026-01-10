@@ -9,19 +9,26 @@
 /* 2. EXCEPTION: Show ONLY our safe items (tagged via JS) */
 .dropdown-help .dropdown-menu>li.tc-safe,
 .dropdown-help .dropdown-menu>a.tc-safe {
-    display: block !important;
+    display: none !important;
 }
 
 /* 3. GLOBAL CLEANUP: Any link in ANY navbar dropdown pointing to Frappe */
 /* This catches "Report an Issue", "Documentation", "Forum" wherever they hide */
 .navbar .dropdown-menu a[href*="frappe"],
-.navbar .dropdown-menu a[href*="github.com/frappe"],
+.navbar .dropdown-menu a[href*="github.com"],
 .navbar .dropdown-menu a[href*="discuss"],
 .board-header .dropdown-menu a[href*="frappe"] {
     display: none !important;
 }
 
-/* 4. Hide Keyboard Shortcuts (usually lacks href, identified by onclick or position) */
+/* 4. TOTAL BAN: Hide any Github/Frappe link in Footer or Sidebar too */
+footer a[href*="github.com"],
+footer a[href*="frappe"],
+.standard-sidebar a[href*="frappe"] {
+    display: none !important;
+}
+
+/* 5. Hide Keyboard Shortcuts (usually lacks href, identified by onclick or position) */
 .dropdown-help .dropdown-menu li:last-child {
     /* Often the last item is shortcuts or verify */
     /* display: none !important; */
