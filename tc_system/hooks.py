@@ -5,6 +5,8 @@ app_description = "Telecom Cambodia Control Plane"
 app_email = "admin@telecomcambodia.com"
 app_license = "mit"
 
+app_logo_url = "/assets/tc_system/images/logo.png"
+
 # Includes in <head>
 # ------------------
 

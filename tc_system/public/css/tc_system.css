@@ -2,13 +2,15 @@
 
 /* Header Branding */
 .navbar-brand .app-logo {
-    content: url("https://telecomcambodia.com/logo.png"); /* Replace with actual asset later */
+    content: url("/assets/tc_system/images/logo.png");
     max-height: 40px;
+    width: auto;
 }
 
 /* Primary Color: Telecom Cambodia Blue */
 :root {
-    --primary: #007bff; /* Adjust to official TC brand color */
+    --primary: #007bff;
+    /* Adjust to official TC brand color */
     --primary-light: #e6f2ff;
 }
 
