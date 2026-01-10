@@ -5,7 +5,13 @@ app_description = "Telecom Cambodia Control Plane"
 app_email = "admin@telecomcambodia.com"
 app_license = "mit"
 
+# Note: Assets in public/ folder are served at /assets/<app_name>/...
 app_logo_url = "/assets/tc_system/images/logo.png"
+
+website_context = {
+	"favicon": "/assets/tc_system/images/logo.png",
+	"splash_image": "/assets/tc_system/images/logo.png",
+}
 
 # Includes in <head>
 # ------------------
