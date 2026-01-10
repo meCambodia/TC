@@ -19,12 +19,12 @@ website_context = {
 
 # include js, css files in header of desk.html
 # include js, css files in header of desk.html
-app_include_js = "/assets/tc_system/js/tc_system.js"
-app_include_css = "/assets/tc_system/css/tc_system.css"
+app_include_js = "/assets/tc_system/js/tc_system.js?v=2.1"
+app_include_css = "/assets/tc_system/css/tc_system.css?v=2.1"
 
 # include js, css files in header of web template
-web_include_js = "/assets/tc_system/js/tc_system.js"
-web_include_css = "/assets/tc_system/css/tc_system.css"
+web_include_js = "/assets/tc_system/js/tc_system.js?v=2.1"
+web_include_css = "/assets/tc_system/css/tc_system.css?v=2.1"
 
 # Authentication and Authorization
 # --------------------------------
