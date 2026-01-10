@@ -1,10 +1,14 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
-// Placeholder for the logo - in real app, import from assets
 const Logo = () => (
-    <View className="h-20 w-full items-center justify-center mb-10">
-        <Text className="text-3xl font-bold text-blue-600">TELECOM CAMBODIA</Text>
+    <View className="items-center justify-center mb-10">
+        <Image
+            source={require('../assets/icon.png')}
+            style={{ width: 120, height: 120 }}
+            resizeMode="contain"
+        />
+        <Text className="text-2xl font-bold text-blue-600 mt-4">TELECOM CAMBODIA</Text>
     </View>
 );
 
