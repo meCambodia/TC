@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import now, add_to_date
 
 @frappe.whitelist(allow_guest=True)
 def ping():
@@ -8,25 +9,57 @@ def ping():
 def get_user_details():
     """Example endpoint for the mobile app to get logged-in user info"""
     user = frappe.session.user
+    roles = frappe.get_roles(user)
     return {
         "user": user,
         "full_name": frappe.utils.get_fullname(user),
-        "roles": frappe.get_roles(user)
+        "roles": roles,
+        "is_manager": "System Manager" in roles
+    }
+
+@frappe.whitelist()
+def get_dashboard_stats():
+    """Aggregate real-time metrics for Management Dashboard"""
+    # Only allow Managers
+    # if "System Manager" not in frappe.get_roles(): return {} 
+
+    todo = frappe.db.count("TC Case", {"status": "Open"})
+    in_progress = frappe.db.count("TC Case", {"status": "In Progress"})
+    resolved = frappe.db.count("TC Case", {"status": "Resolved"})
+    critical = frappe.db.count("TC Case", {"priority": "Critical", "status": ["!=", "Resolved"]})
+    
+    # Calculate SLA Breaches (Deadline passed and not resolved)
+    breached = frappe.db.sql("""
+        SELECT count(name) FROM `tabTC Case`
+        WHERE resolution_deadline < NOW() AND status != 'Resolved'
+    """)[0][0]
+
+    return {
+        "open": todo,
+        "working": in_progress,
+        "done": resolved,
+        "critical": critical,
+        "breached": breached
     }
 
 @frappe.whitelist()
 def get_my_cases():
     """Fetch support tickets for the logged-in user."""
+    # Allow fetching all cases if Administrator/Technician, otherwise filter by owner
+    filters = {}
+    if "System Manager" not in frappe.get_roles(frappe.session.user):
+        filters["owner"] = frappe.session.user
+
     return frappe.get_all(
         "TC Case",
-        filters={"customer_id": frappe.session.user},
-        fields=["name", "subject", "status", "priority", "modified"],
+        filters=filters,
+        fields=["name", "subject", "status", "priority", "modified", "owner"],
         order_by="modified desc"
     )
 
 @frappe.whitelist()
 def create_case(subject, description, priority="Medium"):
-    """Allow mobile users to create a new support ticket."""
+    """Allow mobile users to create a new support ticket with SLA."""
     if not subject:
         frappe.throw("Subject is required")
     
@@ -35,63 +68,36 @@ def create_case(subject, description, priority="Medium"):
         "subject": subject,
         "description": description,
         "priority": priority,
-        "customer_id": frappe.session.user,
-        "status": "Open"
+        "status": "Open",
+        "owner": frappe.session.user
     })
+
+    # Day 2: SLA Logic
+    if priority == "Critical":
+        case.resolution_deadline = add_to_date(now(), hours=4)
+    elif priority == "High":
+        case.resolution_deadline = add_to_date(now(), hours=24)
+    
     case.insert(ignore_permissions=True)
     return {"message": "Case created", "name": case.name}
-@frappe.whitelist(allow_guest=True)
-def sign_up(email, full_name, password):
-    """
-    Creates a new user from the mobile app.
-    """
-    if frappe.db.exists("User", email):
-        frappe.throw("User with this email already exists", frappe.DuplicateEntryError)
 
-    user = frappe.get_doc({
-        "doctype": "User",
-        "email": email,
-        "first_name": full_name,
-        "enabled": 1,
-        "new_password": password,
-        "user_type": "System User" # Or "Website User" depending on needs
-    })
-    user.insert(ignore_permissions=True)
+@frappe.whitelist()
+def update_status(case_id, status):
+    """Transition Check: Open -> In Progress -> Resolved"""
+    if not frappe.db.exists("TC Case", case_id):
+        frappe.throw("Case not found")
     
-    # Add 'Customer' role or any specific role for TCsystem
-    user.add_roles("System Manager") # Warning: Only for dev. Usually 'Customer' or 'Guest'.
+    doc = frappe.get_doc("TC Case", case_id)
     
-    return {"message": "User created successfully", "user": user.name}
-
-@frappe.whitelist(allow_guest=True)
-def handle_webhook():
-    """
-    Inbound webhook receiver from Microservices.
-    Expected Payload:
-    {
-        "event": "OrderNeedsReview",
-        "payload": { ... },
-        "timestamp": "iso-date"
-    }
-    """
-    # 1. Verify Signature (HMAC)
-    # signature = frappe.get_request_header("X-Signature")
-    # secret = frappe.conf.get("TCSYSTEM_WEBHOOK_SECRET")
-    # if not verify_signature(frappe.request.data, signature, secret):
-    #     frappe.throw("Invalid Signature", frappe.PermissionError)
-
-    data = frappe.form_dict
-    event_type = data.get("event")
+    # Simple State Machine
+    if status == "In Progress":
+        if doc.status == "Open":
+            doc.status = "In Progress"
+            frappe.msgprint("Ticket Accepted")
+    elif status == "Resolved":
+        if doc.status == "In Progress":
+            doc.status = "Resolved"
+            # Here we would send Notification (Day 2 Feature)
     
-    if not event_type:
-        return {"status": "error", "message": "Missing event type"}
-
-    # 2. Enqueue processing to avoid blocking the caller
-    frappe.enqueue(
-        "tc_system.jobs.event_processor.process_event",
-        queue="default",
-        event_type=event_type,
-        payload=data.get("payload")
-    )
-
-    return {"status": "queued", "event": event_type}
+    doc.save(ignore_permissions=True)
+    return {"status": doc.status}

@@ -1,34 +1,20 @@
-/* Telecom Cambodia Theme */
+/* TC System Branding */
 
-/* Header Branding */
-/*
-   Note: Logo is now handled by Website Settings (DB).
-   We removed the CSS override to prevent loading conflicts.
-*/
+/* Hide Default Logo if needed (we replaced it via settings, but safe to hide original if duplicated) */
+/* .app-logo { display: none !important; } */
 
-/* Login Page Logo */
-/* .page-card-head img {
-    content: url("/assets/tc_system/images/tc_logo.png") !important;
-    max-height: 80px;
-} */
-
-/* Primary Color: Telecom Cambodia Blue */
-:root {
-    --primary: #007bff;
-    /* Adjust to official TC brand color */
-    --primary-light: #e6f2ff;
+/* Hide Frappe specific links in Help Menu */
+.dropdown-help .dropdown-menu .dropdown-item[href*="frappe"],
+.dropdown-help .dropdown-menu .dropdown-item[href*="github"],
+.dropdown-help .dropdown-menu .dropdown-item[href*="forum"],
+.dropdown-help .dropdown-menu .dropdown-item[href*="docs"] {
+    display: none !important;
 }
 
-/* Rounded Buttons for a Modern Feel */
-.btn {
-    border-radius: 8px !important;
+/* Ensure our items are visible */
+.dropdown-help .dropdown-menu .dropdown-item {
+    font-weight: 500;
 }
 
-/* Highlight Critical Statuses in List Views */
-.list-row-container[data-status="Open"] .level-left {
-    border-left: 4px solid var(--primary);
-}
-
-.list-row-container[data-status="Critical"] .level-left {
-    border-left: 4px solid #dc3545;
-}
+/* Custom Header Color if needed */
+/* .navbar { background-color: #007bff !important; } */

@@ -5,17 +5,17 @@ export default function TabLayout() {
     return (
         <Tabs screenOptions={{ tabBarActiveTintColor: '#007bff' }}>
             <Tabs.Screen
-                name="home"
+                name="cases"
                 options={{
-                    title: 'Home',
-                    tabBarIcon: ({ color }) => <Text style={{ color }}>🏠</Text>
+                    title: 'Job Queue',
+                    tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 18 }}>📋</Text>
                 }}
             />
             <Tabs.Screen
-                name="cases"
+                name="dashboard"
                 options={{
-                    title: 'My Tickets',
-                    tabBarIcon: ({ color }) => <Text style={{ color }}>🎫</Text>
+                    title: 'Ops Command',
+                    tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 18 }}>📊</Text>
                 }}
             />
         </Tabs>
