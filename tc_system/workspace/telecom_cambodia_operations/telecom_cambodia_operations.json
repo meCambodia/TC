@@ -1,0 +1,59 @@
+{
+    "charts": [
+        {
+            "chart_name": "Cases by Status",
+            "label": "Cases by Status"
+        }
+    ],
+    "content": "[{\"type\":\"header\",\"data\":{\"text\":\"Operations Control Center\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"New Ticket\",\"link_type\":\"DocType\",\"link_to\":\"TC Case\",\"onboard\":1,\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Dispatch Tech\",\"link_type\":\"DocType\",\"link_to\":\"Installation Appointment\",\"onboard\":1,\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Refunds\",\"link_type\":\"DocType\",\"link_to\":\"Refund Request\",\"onboard\":1,\"col\":4}},{\"type\":\"chart\",\"data\":{\"chart_name\":\"Cases by Status\",\"col\":12}}]",
+    "creation": "2024-01-01 00:00:00.000000",
+    "docstatus": 0,
+    "doctype": "Workspace",
+    "for_user": "",
+    "hide_custom": 0,
+    "icon": "monitor",
+    "is_standard": 1,
+    "label": "Telecom Cambodia Operations",
+    "modified": "2024-01-01 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "TC System",
+    "name": "Telecom Cambodia Operations",
+    "owner": "Administrator",
+    "public": 1,
+    "roles": [
+        {
+            "role": "System Manager"
+        }
+    ],
+    "sequence_id": 1,
+    "shortcuts": [
+        {
+            "color": "Grey",
+            "doc_view": "List",
+            "format": "Count",
+            "label": "Open Cases",
+            "link_to": "TC Case",
+            "stats_filter": "{\"status\": \"Open\"}",
+            "type": "DocType"
+        },
+        {
+            "color": "Green",
+            "doc_view": "List",
+            "format": "Count",
+            "label": "Scheduled Installs",
+            "link_to": "Installation Appointment",
+            "stats_filter": "{\"status\": \"Scheduled\"}",
+            "type": "DocType"
+        },
+        {
+            "color": "Red",
+            "doc_view": "List",
+            "format": "Count",
+            "label": "Pending Refunds",
+            "link_to": "Refund Request",
+            "stats_filter": "{\"status\": \"Pending Approval\"}",
+            "type": "DocType"
+        }
+    ],
+    "title": "Telecom Cambodia Operations"
+}
