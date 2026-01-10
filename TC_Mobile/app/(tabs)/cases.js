@@ -27,15 +27,10 @@ export default function CasesScreen() {
 
     const fetchCases = async () => {
         try {
-            // Placeholder: In a real app we'd need auth token storage
-            // const data = await API.getMyCases(); 
-            // setCases(data);
-
-            // MOCK DATA for "Day 1" Demo until Auth is fully wired
-            setCases([
-                { name: 'TC-CASE-2024-001', subject: 'Internet Slow', status: 'Open', priority: 'High', modified: '2024-01-10' },
-                { name: 'TC-CASE-2024-002', subject: 'Billing Question', status: 'Resolved', priority: 'Medium', modified: '2024-01-08' }
-            ]);
+            // Fetch Real Data from Frappe Cloud
+            const data = await API.getMyCases();
+            // Handle if API returns {message: []} or just []
+            setCases(Array.isArray(data) ? data : (data.message || []));
         } catch (error) {
             console.error(error);
         } finally {
