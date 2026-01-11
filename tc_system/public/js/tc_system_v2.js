@@ -64,6 +64,23 @@ $(document).on("app_ready", function () {
     console.log("TC System v2: Sentry Robot Deployed");
 });
 
+// LOGIN PAGE BRANDING FIX
+$(document).ready(function () {
+    if (window.location.pathname === "/login") {
+        // Fix the Heading "Login to Frappe"
+        // Retrying for 2 seconds to catch rendering
+        const fixLoginTitle = setInterval(() => {
+            const heading = $(".page-card-head span");
+            if (heading.length > 0) {
+                heading.text("Login to Telecom Cambodia");
+                document.title = "Login - Telecom Cambodia";
+                clearInterval(fixLoginTitle);
+            }
+        }, 100);
+        setTimeout(() => clearInterval(fixLoginTitle), 3000);
+    }
+});
+
 frappe.provide('frappe.ui.misc');
 frappe.ui.misc.about = function () {
     frappe.msgprint({
