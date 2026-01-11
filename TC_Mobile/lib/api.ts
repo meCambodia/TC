@@ -86,6 +86,27 @@ class API {
         return data.message || { open: 0, working: 0, done: 0, critical: 0, breached: 0 };
     }
 
+    // SUBSCRIPTION REQUESTS
+    static async createSubscriptionRequest(currentPlan, requestedPlan, reason) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (sessionCookie) headers['Cookie'] = sessionCookie;
+
+        const response = await fetch(`${BASE_URL}/api/method/tc_system.api.create_subscription_request`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ current_plan: currentPlan, requested_plan: requestedPlan, reason })
+        });
+        return response.json();
+    }
+
+    static async getMyRequests() {
+        const headers = {};
+        if (sessionCookie) headers['Cookie'] = sessionCookie;
+        const response = await fetch(`${BASE_URL}/api/method/tc_system.api.get_my_requests`, { headers });
+        const data = await response.json();
+        return data.message || [];
+    }
+
     static async getMyCases() {
         console.log(`Fetching cases from: ${BASE_URL}/api/method/tc_system.api.get_my_cases`);
         try {

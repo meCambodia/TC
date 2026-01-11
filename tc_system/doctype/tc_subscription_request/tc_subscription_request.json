@@ -1,0 +1,151 @@
+{
+    "actions": [],
+    "creation": "2024-01-11 10:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "customer_section",
+        "customer",
+        "current_plan",
+        "requested_plan",
+        "justification",
+        "status_section",
+        "workflow_state",
+        "approval_trail_section",
+        "sales_rep_verify_by",
+        "sales_manager_approve_by",
+        "head_of_sales_approve_by",
+        "comments_section",
+        "sales_rep_notes",
+        "manager_rev_notes",
+        "head_approval_notes"
+    ],
+    "fields": [
+        {
+            "fieldname": "customer_section",
+            "fieldtype": "Section Break",
+            "label": "Request Details"
+        },
+        {
+            "fieldname": "customer",
+            "fieldtype": "Link",
+            "label": "Customer",
+            "options": "User",
+            "reqd": 1
+        },
+        {
+            "fieldname": "current_plan",
+            "fieldtype": "Data",
+            "label": "Current Tier"
+        },
+        {
+            "fieldname": "requested_plan",
+            "fieldtype": "Data",
+            "label": "Requested Tier",
+            "reqd": 1
+        },
+        {
+            "fieldname": "justification",
+            "fieldtype": "Small Text",
+            "label": "Reason for Change"
+        },
+        {
+            "fieldname": "status_section",
+            "fieldtype": "Section Break",
+            "label": "Status"
+        },
+        {
+            "default": "Draft",
+            "fieldname": "workflow_state",
+            "fieldtype": "Select",
+            "label": "Workflow State",
+            "options": "Draft\nPending Rep\nPending Manager\nPending Head of Sales\nApproved\nRejected\nAction Required",
+            "read_only": 1
+        },
+        {
+            "fieldname": "approval_trail_section",
+            "fieldtype": "Section Break",
+            "label": "Approval Trail"
+        },
+        {
+            "fieldname": "sales_rep_verify_by",
+            "fieldtype": "Link",
+            "label": "Verified By (Rep)",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "sales_manager_approve_by",
+            "fieldtype": "Link",
+            "label": "Approved By (Manager)",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "head_of_sales_approve_by",
+            "fieldtype": "Link",
+            "label": "Final Approval By (Head)",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "comments_section",
+            "fieldtype": "Section Break",
+            "label": "Internal Comments"
+        },
+        {
+            "fieldname": "sales_rep_notes",
+            "fieldtype": "Small Text",
+            "label": "Sales Rep Notes"
+        },
+        {
+            "fieldname": "manager_rev_notes",
+            "fieldtype": "Small Text",
+            "label": "Manager Notes"
+        },
+        {
+            "fieldname": "head_approval_notes",
+            "fieldtype": "Small Text",
+            "label": "Head of Sales Notes"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2024-01-11 10:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "tc_system",
+    "name": "TC Subscription Request",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Customer",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "role": "Sales User",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "role": "Sales Manager",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

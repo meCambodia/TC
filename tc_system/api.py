@@ -97,7 +97,39 @@ def update_status(case_id, status):
     elif status == "Resolved":
         if doc.status == "In Progress":
             doc.status = "Resolved"
-            # Here we would send Notification (Day 2 Feature)
     
     doc.save(ignore_permissions=True)
     return {"status": doc.status}
+
+# -------------------------------
+# SUBSCRIPTION REQUEST API (New)
+# -------------------------------
+
+@frappe.whitelist()
+def create_subscription_request(current_plan, requested_plan, reason=""):
+    """Mobile App: Customer requests plan change"""
+    doc = frappe.get_doc({
+        "doctype": "TC Subscription Request",
+        "customer": frappe.session.user,
+        "current_plan": current_plan,
+        "requested_plan": requested_plan,
+        "justification": reason,
+        "workflow_state": "Draft" # Default
+    })
+    doc.insert(ignore_permissions=True)
+    
+    # Auto-submit logic handled by frontend? Or here?
+    # Let's auto-submit to Pending Rep to save clicks
+    doc.process_action("submit")
+    
+    return {"message": "Request Created", "name": doc.name}
+
+@frappe.whitelist()
+def get_my_requests():
+    """Mobile App: List my subscription changes"""
+    user = frappe.session.user
+    return frappe.get_all("TC Subscription Request", 
+        fields=["name", "current_plan", "requested_plan", "workflow_state", "modified"],
+        filters={"customer": user},
+        order_by="modified desc"
+    )
