@@ -67,7 +67,21 @@ $(document).on("app_ready", function () {
 // LOGIN PAGE BRANDING FIX
 $(document).ready(function () {
     if (window.location.pathname === "/login") {
-        // Fix the Heading "Login to Frappe"
+
+        // 1. Inject Background Image
+        $('<style>').text(`
+            body {
+                background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("/assets/tc_system/images/angkor_bg.png") no-repeat center center fixed !important;
+                background-size: cover !important;
+            }
+            .page-card {
+                background: rgba(255, 255, 255, 0.95); /* Semi-transparent card */
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+        `).appendTo('head');
+
+        // 2. Fix the Heading "Login to Frappe"
         // Retrying for 2 seconds to catch rendering
         const fixLoginTitle = setInterval(() => {
             const heading = $(".page-card-head span");
