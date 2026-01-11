@@ -114,15 +114,13 @@ export default function CasesScreen() {
                     {isTech ? "Job Queue" : "My Tickets"}
                 </Text>
                 <View className="flex-row">
-                    {/* PLAN CHANGE BUTTON */}
-                    {!isTech && (
-                        <TouchableOpacity
-                            onPress={() => router.push('/change_plan')}
-                            className="bg-indigo-600 px-3 py-2 rounded-lg mr-2"
-                        >
-                            <Text className="text-white font-bold">⬆️ Upgrade</Text>
-                        </TouchableOpacity>
-                    )}
+                    {/* PLAN CHANGE BUTTON (Visible to ALL for testing) */}
+                    <TouchableOpacity
+                        onPress={() => router.push('/change_plan')}
+                        className="bg-indigo-600 px-3 py-2 rounded-lg mr-2"
+                    >
+                        <Text className="text-white font-bold">⬆️ Upgrade</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity className="bg-blue-600 px-4 py-2 rounded-lg">
                         <Text className="text-white font-bold">+ New</Text>
