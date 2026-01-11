@@ -1,40 +1,30 @@
-import { View, Text, TouchableOpacity, Image, TextInput, Alert, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Text, View, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator, ImageBackground } from 'react-native';
 import { useState } from 'react';
-import API, { setBaseUrl, BASE_URL } from '../lib/api';
-
-const Logo = () => (
-    <View className="items-center justify-center mb-6">
-        <Image
-            source={require('../assets/logo.png')}
-            style={{ width: 200, height: 80 }}
-            resizeMode="contain"
-        />
-        {/* Text removed since logo usually contains the name, or we keep it if logo is just icon */}
-        {/* <Text className="text-xl font-bold text-blue-600 mt-2">TELECOM CAMBODIA</Text> */}
-    </View>
-);
+import { useRouter } from 'expo-router';
+import API from '../lib/api';
 
 export default function LoginScreen() {
     const router = useRouter();
-    const [email, setEmail] = useState('Administrator'); // Default to Admin for testing
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [serverUrl, setServerUrl] = useState(BASE_URL);
+    const [serverUrl, setServerUrl] = useState('telecomcambodia.frappe.cloud'); // Default
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async () => {
-        if (!serverUrl) {
-            Alert.alert("Error", "Please enter Server URL");
+        if (!email || !password) {
+            Alert.alert("Error", "Please fill in all fields");
             return;
         }
 
         setLoading(true);
         try {
-            // 1. Update the API target
-            setBaseUrl(serverUrl);
+            // Set dynamic base URL
+            let url = serverUrl.trim();
+            if (!url.startsWith('http')) url = `https://${url}`;
+            API.setBaseUrl(url);
 
-            // 2. Perform Login
-            await API.login(email, password);
+            const result = await API.login(email, password);
+            console.log("Login Result:", result);
 
             // 3. Navigate
             router.replace('/(tabs)/cases');
@@ -46,56 +36,74 @@ export default function LoginScreen() {
     };
 
     return (
-        <View className="flex-1 bg-white justify-center px-6">
-            <Logo />
+        <ImageBackground
+            source={require('../assets/angkor_bg.png')}
+            className="flex-1 justify-center"
+            resizeMode="cover"
+        >
+            {/* Dark Overlay */}
+            <View className="flex-1 bg-black/40 justify-center p-6">
 
-            {/* Server URL Input */}
-            <View className="bg-gray-50 p-3 rounded-lg mb-4 border border-gray-200">
-                <Text className="text-gray-400 text-xs mb-1 uppercase">Frappe Server URL</Text>
-                <TextInput
-                    className="text-black font-medium"
-                    value={serverUrl}
-                    onChangeText={setServerUrl}
-                    placeholder="https://your-site.frappe.cloud"
-                    autoCapitalize="none"
-                />
+                {/* Login Card */}
+                <View className="bg-white/95 p-6 rounded-2xl shadow-xl">
+                    <View className="items-center mb-8">
+                        <Image source={require('../assets/icon.png')} className="w-20 h-20 mb-4" />
+                        <Text className="text-2xl font-bold text-blue-900">Telecom Cambodia</Text>
+                        <Text className="text-gray-500 text-xs">Mobile Control Plane</Text>
+                    </View>
+
+                    <View className="space-y-4">
+                        <View>
+                            <Text className="text-gray-600 mb-1 ml-1 text-xs font-bold">SERVER URL</Text>
+                            <TextInput
+                                className="bg-gray-100 p-4 rounded-xl text-gray-800"
+                                placeholder="telecomcambodia.frappe.cloud"
+                                value={serverUrl}
+                                onChangeText={setServerUrl}
+                                autoCapitalize="none"
+                            />
+                        </View>
+
+                        <View>
+                            <Text className="text-gray-600 mb-1 ml-1 text-xs font-bold">EMAIL / USERNAME</Text>
+                            <TextInput
+                                className="bg-gray-100 p-4 rounded-xl text-gray-800"
+                                placeholder="name@telecomcambodia.com"
+                                value={email}
+                                onChangeText={setEmail}
+                                autoCapitalize="none"
+                            />
+                        </View>
+
+                        <View>
+                            <Text className="text-gray-600 mb-1 ml-1 text-xs font-bold">PASSWORD</Text>
+                            <TextInput
+                                className="bg-gray-100 p-4 rounded-xl text-gray-800"
+                                placeholder="••••••••"
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry
+                            />
+                        </View>
+
+                        <TouchableOpacity
+                            className="bg-blue-900 py-4 rounded-xl items-center mt-4 shadow-lg active:scale-95"
+                            onPress={handleLogin}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <Text className="text-white font-bold text-lg">Login</Text>
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <Text className="text-white/60 text-center mt-8 text-xs">
+                    "Connecting Cambodia to the Future"
+                </Text>
             </View>
-
-            <View className="bg-gray-100 p-4 rounded-lg mb-4">
-                <Text className="text-gray-500 mb-1 text-xs">Username / Email</Text>
-                <TextInput
-                    className="text-black text-base"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                />
-            </View>
-
-            <View className="bg-gray-100 p-4 rounded-lg mb-8">
-                <Text className="text-gray-500 mb-1 text-xs">Password</Text>
-                <TextInput
-                    className="text-black text-base"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-            </View>
-
-            <TouchableOpacity
-                onPress={handleLogin}
-                className="bg-blue-600 p-4 rounded-lg items-center shadow-lg"
-                disabled={loading}
-            >
-                {loading ? (
-                    <ActivityIndicator color="white" />
-                ) : (
-                    <Text className="text-white font-semibold text-lg">Login</Text>
-                )}
-            </TouchableOpacity>
-
-            <Text className="text-center text-gray-400 mt-6 text-xs">
-                Version 1.0.0 (Expo SDK 54)
-            </Text>
-        </View>
+        </ImageBackground>
     );
 }
