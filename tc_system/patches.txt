@@ -1,2 +1,2 @@
-tc_system.patches.set_branding
+tc_system.patches.set_branding.execute
 tc_system.patches.clean_navbar.execute
