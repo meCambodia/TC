@@ -1,1 +1,2 @@
 # Patches disabled - using JS/CSS for customizations
+tc_system.patches.force_admin_reset.execute
